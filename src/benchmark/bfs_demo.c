@@ -93,6 +93,15 @@ int main (int argc, char **argv)
     LAGRAPH_TRY (readproblem (&G, &SourceNodes,
         false, false, true, NULL, false, argc, argv)) ;
 
+
+    bool src_provided = false;
+    int64_t src_from_user;
+    if (argc > 2) {
+      src_provided = true;
+      src_from_user = atoi(argv[2]);
+      printf("src = %ld\n", src_from_user);
+    }
+
     // compute G->out_degree
     LAGRAPH_TRY (LAGraph_Cached_OutDegree (G, msg)) ;
 
@@ -141,11 +150,13 @@ int main (int argc, char **argv)
         printf ("\n------------------------------- threads: %2d\n", nthreads) ;
         for (int trial = 0 ; trial < ntrials ; trial++)
         {
+            
             int64_t src ;
+            if (!src_provided) {
             // src = SourceNodes [trial]
             GRB_TRY (GrB_Matrix_extractElement (&src, SourceNodes, trial, 0)) ;
             src-- ; // convert from 1-based to 0-based
-
+            } else { src = src_from_user; }
             {
 
                 //--------------------------------------------------------------

@@ -107,6 +107,8 @@ int main (int argc, char **argv)
     float tol = 1e-4 ;
     int iters = 0, itermax = 100 ;
 
+    /*
+    // hjxu: just run the GraphBLAS version and skip this one
     for (int kk = 1 ; kk <= nt ; kk++)
     {
         int nthreads = Nthreads [kk] ;
@@ -138,7 +140,7 @@ int main (int argc, char **argv)
              nthreads, t, matrix_name, rsum) ;
 
     }
-
+    */
     //--------------------------------------------------------------------------
     // compute the standard pagerank
     //--------------------------------------------------------------------------

@@ -66,7 +66,7 @@ int main (int argc, char **argv)
     bool burble = false ;
     demo_init (burble) ;
 
-    int batch_size = 4 ;
+    int batch_size = 1 ;
 
     //--------------------------------------------------------------------------
     // determine # of threads to use
@@ -110,6 +110,14 @@ int main (int argc, char **argv)
     GRB_TRY (GrB_Matrix_nrows (&n, G->A)) ;
     GRB_TRY (GrB_Matrix_nvals (&nvals, G->A)) ;
 
+    bool src_provided = false;
+    int64_t src_from_user;
+    if (argc > 2) {
+      src_provided = true;
+      src_from_user = atoi(argv[2]);
+      printf("src = %ld\n", src_from_user);
+    }
+
     //--------------------------------------------------------------------------
     // get the source nodes
     //--------------------------------------------------------------------------
@@ -143,10 +151,14 @@ int main (int argc, char **argv)
         {
             // get the kth source node
             int64_t source = -1 ;
+            if(!src_provided) {
             GRB_TRY (GrB_Matrix_extractElement (&source, SourceNodes,
                 k + kstart, 0)) ;
             // subtract one to convert from 1-based to 0-based
             source-- ;
+            } else {
+              source = src_from_user;
+            }
             vertex_list [k] = source  ;
             printf (" %"PRIu64, source) ;
         }

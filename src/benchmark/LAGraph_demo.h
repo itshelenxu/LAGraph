@@ -828,7 +828,7 @@ static int readproblem          // returns 0 if successful, -1 if failure
             fclose (f) ;
             f = NULL ;
         }
-
+        /*
         // read in source nodes in Matrix Market format from the input file
         if (argc > 2 && src_nodes != NULL)
         {
@@ -855,6 +855,7 @@ static int readproblem          // returns 0 if successful, -1 if failure
                 f = NULL ;
             }
         }
+        */
     }
     else
     {
