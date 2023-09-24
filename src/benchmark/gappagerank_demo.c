@@ -105,7 +105,7 @@ int main (int argc, char **argv)
 
     float damping = 0.85 ;
     float tol = 1e-4 ;
-    int iters = 0, itermax = 100 ;
+    int iters = 0, itermax = 20 ;
 
     /*
     // hjxu: just run the GraphBLAS version and skip this one

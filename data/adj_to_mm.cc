@@ -11,11 +11,11 @@ using namespace std;
 #define TEN_MILLION 10000000
 #define HUNDRED_MILLION 100000000
 string input, output;
-int64_t in_lines, num_edges;
-int32_t num_vertices;
-pair<int32_t, int32_t> *edge_list;
-int64_t *offsets;
-int32_t *raw_edges;
+uint64_t in_lines, num_edges;
+uint64_t num_vertices;
+pair<uint64_t, uint64_t> *edge_list;
+uint64_t *offsets;
+uint64_t *raw_edges;
 int main(int argc, char *argv[]) {
   input = argv[1];          // input file
   output = argv[2];  // output file
@@ -27,27 +27,27 @@ int main(int argc, char *argv[]) {
   int64_t line = 0;
   int64_t el = 0, ol = 0;
   int64_t u_, v_;
-  int32_t u, v;
-  int32_t mx_u = -(INT_MAX - 1), mn_u = INT_MAX;
+  uint64_t u, v;
+  uint64_t mx_u = 0, mn_u = INT_MAX;
   string line_str;
   while (infile >> line_str) {
     if(line == 0) {
       cout << "Dataset format: " << line_str << endl;
     }
     else if (line == 1) {
-      num_vertices = stoi(line_str);
+      num_vertices = stol(line_str);
       cout << "num-vertices: " << num_vertices << endl;
-      offsets = (int64_t *) malloc(sizeof(int64_t) * num_vertices);
+      offsets = (uint64_t *) malloc(sizeof(uint64_t) * num_vertices);
     }
     else if (line == 2) {
       num_edges = stoll(line_str);
       cout << "num-edges: " << num_edges << endl;
       in_lines = num_edges * 2;
-      raw_edges = (int32_t *) malloc(sizeof(int32_t) * num_edges);
-      edge_list = (pair<int32_t, int32_t> *) malloc(sizeof(pair<int32_t, int32_t>) * in_lines);
+      raw_edges = (uint64_t *) malloc(sizeof(uint64_t) * num_edges);
+      edge_list = (pair<uint64_t, uint64_t> *) malloc(sizeof(pair<uint64_t, uint64_t>) * in_lines);
     }
     else {
-      v = stoi(line_str);
+      v = stol(line_str);
       if(line < num_vertices+3) {
         offsets[ol++] = v;
       }
@@ -58,7 +58,7 @@ int main(int argc, char *argv[]) {
     line += 1;
   }
   cout << "[DONE] reading the dataset." << endl;
-  int64_t st, nd;
+  uint64_t st, nd;
   int32_t max_degree = 0, max_vid = 0;
   line = 0;
   for(u=0; u<num_vertices; u+=1) {
@@ -70,8 +70,8 @@ int main(int argc, char *argv[]) {
     }
     for(int64_t i=st; i<nd; i+=1) {
       v = raw_edges[i];
-      edge_list[line++] = make_pair(u, v);
-      edge_list[line++] = make_pair(v, u);
+      edge_list[line++] = make_pair(u + 1, v + 1);
+      edge_list[line++] = make_pair(v + 1, u + 1);
     }
     mx_u = max(u, mx_u);
     mn_u = min(u, mn_u);
@@ -109,7 +109,7 @@ int main(int argc, char *argv[]) {
     exit(-3);
   }
   uint32_t weight = 1;
-  out_file << num_vertices << " " << num_vertices << " " << num_edges << "\n";
+  out_file << num_vertices + 1 << " " << num_vertices + 1<< " " << num_edges << "\n";
   for(int64_t i=0; i<out_line; i+=1) {
     out_file << edge_list[i].first << " " << edge_list[i].second << " " << weight << "\n";
   }
